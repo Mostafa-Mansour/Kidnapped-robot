@@ -1,13 +1,19 @@
 # Overview
 This repository contains all the code needed to complete the final project for the Localization course in Udacity's Self-Driving Car Nanodegree.
 
-#### Submission
-All you will submit is your completed version of `particle_filter.cpp`, which is located in the `src` directory. You should probably do a `git pull` before submitting to verify that your project passes the most up-to-date version of the grading code (there are some parameters in `src/main.cpp` which govern the requirements on accuracy and run time.)
 
 ## Project Introduction
 Your robot has been kidnapped and transported to a new location! Luckily it has a map of this location, a (noisy) GPS estimate of its initial location, and lots of (noisy) sensor and control data.
 
 In this project you will implement a 2 dimensional particle filter in C++. Your particle filter will be given a map and some initial localization information (analogous to what a GPS would provide). At each time step your filter will also get observation and control data. 
+
+## Particle filter class
+It contains the required functions to build a particle filter such as:
+* initialisation function: This function is used to initialize 1000 particles with a prior values obtained from GPS and a given heading.
+* Prediction function: In this function a transitional probability is calculated using a motion model. In this project a gaussian white process noises are supposed. The transitional probability is calculated as a likelihood of the state given a previous state, control inputs and process noises.
+* Data association: This function finds which observation corresponds to which landmarks. a nearest neighbors algorithm is used to find the correspondence. For this function, I have surfed the internet to find different algorithms to use.
+* Update weights: In this function a recursive Bayes' rule is implemented. Predicted landmarks are calculated using transitional state within the range of sensor for every particle. After that, a likelihood between the predicted landmarks and the observation is calculated for every particle. This likelihood is the un normalized weights. After that, weights are normalized by dividing every weight by their sum. then, an un normalized posterior distribution is calculated by multiplying the weights with predicted likelihood from the previous step. Finally, this posterior is normalized and the state is estimated as the mean of this posterior.
+* Resampling: this function is used for particle resampling to avoid particles depletion.
 
 ## Running the Code
 This project involves the Term 2 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases)
